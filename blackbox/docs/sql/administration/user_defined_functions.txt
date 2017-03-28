@@ -63,6 +63,12 @@ For example, if you wanted to name two ``geo_point`` arguments ``start_point`` a
     ...      }';
     CREATE OK, 1 row affected  (... sec)
 
+
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS calculate_distance(start_point geo_point, end_point geo_point);
+    DROP OK, 1 row affected  (... sec)
+
 .. NOTE::
 
    Argument names are used for query documentation purposes only. You cannot
@@ -111,6 +117,20 @@ This would overload our ``subtract`` function with more arguments::
    It is considered bad practice to create functions that have the same name
    as the CrateDB built-in functions.
 
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS subtract(long, long);
+    DROP OK, 1 row affected  (... sec)
+
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS subtract(long, long, long);
+    DROP OK, 1 row affected  (... sec)
+
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS subtract(integer, integer);
+    DROP OK, 1 row affected  (... sec)
 
 Determinism
 -----------
@@ -125,15 +145,18 @@ DROP FUNCTION
 
 User defined functions can be dropped like this::
 
-     cr> DROP FUNCTION log10(integer, integer);
+     cr> DROP FUNCTION log10(long);
+     DROP OK, 1 row affected  (... sec)
 
-Adding ``IF EXISITS`` prevents from raising an error if the function doesn't exist::
+Adding ``IF EXISTS`` prevents from raising an error if the function doesn't exist::
 
-     cr> DROP FUNCTION IF EXISITS log10(integer, integer);
+     cr> DROP FUNCTION IF EXISTS log10(integer);
+     DROP OK, 1 row affected  (... sec)
 
 Optionally, argument names can be specified within the drop statement::
 
-     cr> DROP FUNCTION IF EXISTS calculate_distance(start geo_point, end geo_point);
+     cr> DROP FUNCTION IF EXISTS calculate_distance(start_point geo_point, end_point geo_point);
+     DROP OK, 1 row affected  (... sec)
 
 
 Supported Languages
@@ -168,6 +191,11 @@ Here is an example of a JavaScript function returning a ``double array``::
     ...      }';
     CREATE OK, 1 row affected  (... sec)
 
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS rotate_point(point geo_point, angle float);
+    DROP OK, 1 row affected  (... sec)
+
 Here is an example of a JavaScript function returning a ``GeoJson``::
 
 
@@ -183,6 +211,12 @@ Here is an example of a JavaScript function returning a ``GeoJson``::
     ...      }';
     CREATE OK, 1 row affected  (... sec)
 
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS rotate_point(point geo_point, angle float);
+    DROP OK, 1 row affected  (... sec)
+
+
 Below is an example of a JavaScript function returning ``WKT String``,
 which will be casted into a ``geo_point``::
 
@@ -197,6 +231,12 @@ which will be casted into a ``geo_point``::
      ...      }';
      CREATE OK, 1 row affected  (... sec)
 
+
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS symmetric_point(point geo_point);
+    DROP OK, 1 row affected  (... sec)
+
 Similarly, if the function specifies ``geo_shape`` or ``object``
 as a return type, then the JavaScript function should return
 an ``object`` or a ``GeoJson``::
@@ -209,6 +249,12 @@ an ``object`` or a ``GeoJson``::
      ...        return {"lon": point[0], "lat": point[1]};
      ...      }';
      CREATE OK, 1 row affected  (... sec)
+
+
+.. hide:
+
+    cr> DROP FUNCTION IF EXISTS point_object(point geo_point);
+    DROP OK, 1 row affected  (... sec)
 
 .. NOTE::
 
